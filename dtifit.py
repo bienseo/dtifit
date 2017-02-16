@@ -1,14 +1,12 @@
-
-''' dtiFit.py
-# CCNC DTI FA map
+''' dtifit.py
+# CCNC DTI preprocessing script
 # Created by Eunseo Cho
-# 2017.02.10 - 2017.02.15
+# 2017.02.10 - 2017.02.16
 '''
 import re
 import os
 import argparse
 import textwrap
-import glob
 from progressbar import AnimatedMarker, ProgressBar, Percentage, Bar
 
 
@@ -25,10 +23,13 @@ def dtiFit(dtidir):
 	else:
 		print 'There are no dti data'
 
-	#print files
+	i = 0	
+	while i<len(files):
+		if re.search('nii.gz$', ' '.join(os.listdir(dtidir))):
+			dtiData = files[i]
+		i += 1
 
-	dtiData = files[3]
-	print '\n' + dtiData + '\n'
+	print dtiData		
 
 	# B0 extraction from data	
 	print '='*80, '\nB0 extraction from data\n', '='*80
@@ -85,7 +86,8 @@ def dtiFit(dtidir):
 	pbar = ProgressBar().start()
 	output = os.popen(command).read()
 	pbar.finish()
-
+	
+	print "DTI preprocessing completed"
 
 def main(dtidir):
 	
@@ -104,7 +106,7 @@ if __name__ == '__main__':
         '-d', '--dtidir',
         help='DTI data directory location, default = my dti',
         action='store_true',
-        default="/Users/bienseo/Desktop/DTI") #default=os.getcwd())
+        default="/Users/bienseo/Desktop/DTI") #/Users/bienseo/Desktop/DTI  os.getcwd())
 
 	args = parser.parse_args()
  	
